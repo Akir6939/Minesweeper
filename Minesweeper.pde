@@ -120,6 +120,7 @@ public class MSButton
         if(mouseButton==RIGHT){
             if(flagged){
                 flagged=false;
+                clicked = false;
             }
             else if(!flagged){
                 flagged=true;
