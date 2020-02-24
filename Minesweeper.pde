@@ -5,6 +5,7 @@ private ArrayList <MSButton> mines; //ArrayList of just the minesweeper buttons 
 public final int NUM_ROWS =15;
 public final int NUM_COLS = 15;
 public final int NUM_MINES = 40;
+public boolean firstMove;
 
 void setup ()
 {
@@ -18,15 +19,14 @@ void setup ()
             buttons[i][j] = new MSButton(i,j);
         }
     }
-    
-    setMines();
+    firstMove=true;
 }
-public void setMines()
+public void setMines(int r, int c)
 {   
     for(int i = 1;i<=NUM_MINES;i++){
     int row = (int)(Math.random()*NUM_ROWS);
     int col = (int)(Math.random()*NUM_COLS);
-    if(!mines.contains(buttons[row][col]))
+    if(!mines.contains(buttons[row][col])&&row!=r&&col!=c)
         mines.add(buttons[row][col]);
     }
 }
@@ -39,6 +39,7 @@ public void draw ()
 }
 public boolean isWon()
 {
+    if(firstMove) return false;
     for(MSButton m : mines){
         if(!m.isFlagged())
             return false;
@@ -116,6 +117,11 @@ public class MSButton
     // called by manager
     public void mousePressed () 
     {
+        if(firstMove)
+        {
+            setMines(myRow,myCol);
+            firstMove=false;
+        }
         clicked = true;
         if(mouseButton==RIGHT){
             if(flagged){
